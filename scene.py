@@ -18,11 +18,20 @@ def process_config(config):
     with open(path, mode="r", newline="") as file:
         reader = csv.reader(file)
 
+        r, c = 0, 0  # row and column counters
         for row in reader:
-            print(row)
+            # print(row)
+            for val in row:
+                print(f"row {r} col {c} : {val}")
+                if val == "p":
+                    return {"player_start": (r, c)}
+                c += 1
+            r += 1
 
 
 class World:
     def __init__(self, name, config):
         self.name = name
-        self.map = process_config(config)
+        self.map_config = process_config(config)
+        self.player_start = self.map_config.get("player_start")
+        print(f"player_start: {self.player_start}")

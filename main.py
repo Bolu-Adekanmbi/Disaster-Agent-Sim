@@ -3,10 +3,14 @@ from agent import Actor
 
 
 def main():
-    place1 = World("farmland1", "test.csv")
-    player = Actor("hugright")
+    farmland = World("Myers Farm", "test.csv")
+    farmland2 = World("Myers Farm 2", "test2.csv")
+    player1 = Actor("hugright")
 
-    print(f"Player start is: {place1.get_player_start()}")
+    farmland.add_player(player1)
+    print(f"Player is `{farmland.get_player()}`")
+
+    print(farmland2)
 
 
 if __name__ == "__main__":

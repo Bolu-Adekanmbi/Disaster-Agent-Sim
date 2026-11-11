@@ -10,6 +10,7 @@ def process_config(config):
         print("World config file exists, initiating processing...")
     else:
         print(f"The config file `{str(path)}` does not exist")
+        return {}
 
     # Check that it is a valid config file (CSV for now)
     # Check rules like world boundaries, roads exists, some disaster etc.
@@ -39,6 +40,25 @@ class World:
         self.name = name
         self.map_config = process_config(config)
         self.player_start = self.map_config.get("player_start")
+        self.player = None
 
     def get_player_start(self):
         return self.player_start
+
+    def get_player(self):
+        if self.player is None:
+            print(f"There is currently no player in the world `{self.name}`")
+        return self.player
+
+    def add_player(self, player):
+        if self.player:
+            print(
+                f"The player `{player}` has already been added to the world, remove player first before adding a new one"
+            )
+        self.player = player
+
+    def remove_player(self):
+        self.player = None
+
+    def __str__(self):
+        return f"World: {self.name}\nPlayer Start: {self.player_start}\nPlayer: {self.player}"

@@ -14,19 +14,24 @@ def process_config(config):
     # Check that it is a valid config file (CSV for now)
     # Check rules like world boundaries, roads exists, some disaster etc.
 
+    # Where we store world info from processed config, returned by the function
+    world_info = {}
+
     # Process the config as CSV
     with open(path, mode="r", newline="") as file:
         reader = csv.reader(file)
 
-        r, c = 0, 0  # row and column counters
+        r = 0  # row counters
         for row in reader:
             # print(row)
+            c = 0  # col counter resets each row
             for val in row:
-                print(f"row {r} col {c} : {val}")
+                # print(f"row {r} col {c} : {val}")
                 if val == "p":
-                    return {"player_start": (r, c)}
+                    world_info["player_start"] = (r, c)
                 c += 1
             r += 1
+    return world_info
 
 
 class World:
@@ -34,4 +39,6 @@ class World:
         self.name = name
         self.map_config = process_config(config)
         self.player_start = self.map_config.get("player_start")
-        print(f"player_start: {self.player_start}")
+
+    def get_player_start(self):
+        return self.player_start

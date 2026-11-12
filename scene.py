@@ -17,6 +17,7 @@ def process_config(config):
 
     # Where we store world info from processed config, returned by the function
     world_info = {}
+    world_info["grid"] = []
 
     # Process the config as CSV
     with open(path, mode="r", newline="") as file:
@@ -24,6 +25,7 @@ def process_config(config):
 
         r = 0  # row counters
         for row in reader:
+            world_info["grid"].append(row)
             # print(row)
             c = 0  # col counter resets each row
             for val in row:
@@ -39,6 +41,7 @@ class World:
     def __init__(self, name, config):
         self.name = name
         self.map_config = process_config(config)
+        self.grid = self.map_config.get("grid")
         self.player_start = self.map_config.get("player_start")
         self.player = None
 
@@ -53,12 +56,17 @@ class World:
     def add_player(self, player):
         if self.player:
             print(
-                f"The player `{player}` has already been added to the world, remove player first before adding a new one"
+                f"The player `{self.player}` has already been added to the world, remove player first before adding a new one"
             )
         self.player = player
 
     def remove_player(self):
         self.player = None
+
+    def get_grid(self):
+        return self.grid
+
+    # def sim_step(self):
 
     def __str__(self):
         return f"World: {self.name}\nPlayer Start: {self.player_start}\nPlayer: {self.player}"

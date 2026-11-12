@@ -2,16 +2,24 @@ from scene import World
 from agent import Actor
 
 
-def main():
+def test():
     farmland = World("Myers Farm", "test.csv")
-    farmland2 = World("Myers Farm 2", "test2.csv")
     player1 = Actor("hugright")
-
     farmland.add_player(player1)
-    print(f"Player is `{farmland.get_player()}`")
 
-    print(farmland2)
+    print("f1:")
+    for row in farmland.get_grid():
+        print(row)
+
+
+# def main():
+#     farmland = World("Myers Farm", "test.csv")
+#     player1 = Actor("hugright")
+#
+#     farmland.add_player(player1)
+#     print(f"Player is `{farmland.get_player()}`")
 
 
 if __name__ == "__main__":
-    main()
+    # main()
+    test()

@@ -24,6 +24,8 @@ Some later ideas:
 
 - Another idea is choosing between whether or not the next step action is separated to the Agent Class itself or if it is just a part of the World Class. So the choice is between given the agent some knowledge of what moves can I make next, vs the World asking what next states is possible for me to achieve based on what my particular agent can do. However, since I'm thinking that strategy should be based on the Agent it could be better to just have the Agent be the one that makes the choice based on its own programming.
 
+^-- Nedd to check over some of these over the weekend, and make sure that I have everything consolidated
+
 ---
 
 World Key:

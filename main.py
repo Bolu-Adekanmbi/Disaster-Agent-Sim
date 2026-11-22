@@ -7,9 +7,11 @@ def test():
     player1 = Actor("hugright")
     farmland.add_player(player1)
 
-    print("f1:")
-    for row in farmland.get_grid():
-        print(row)
+    print("player1:", farmland.get_player())
+
+    # print("f1:")
+    # for row in farmland.get_grid():
+    #     print(row)
 
 
 # def main():

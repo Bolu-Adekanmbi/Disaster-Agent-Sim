@@ -8,7 +8,18 @@ Within the simulator class we have a World class that is in charge of the curren
 
 ---
 
-The agent class has its own set of rules/thinking, and the agent in particular has a method called something like next_step/move and the idea is that the agent observes the world (not sure if to give it the whole world, or just a part that it can see, perhaps these are 2 different approaches for evaluating the agent's performance based on partial vs fully known world) and uses that to determine it's next course of action.
+The agent class has its own set of rules/thinking, and the agent in particular has a method called something like next_step/move and the idea is that the agent observes the world (~not sure if to give it the whole world, or just a part that it can see~, perhaps these are 2 different approaches for evaluating the agent's performance based on partial vs fully known world) and uses that to determine it's next course of action.
+
+Right now: the agent is given the whole world, and it can see everything (will be helpful for agents that consider everything)
+
+This branches out into two types of disaster response situations: full visibility vs partial visibility. These are 2 separate scenarios that are applicable to real life
+
+Move class?
+--
+The agent might need a move class? Instead of just returning a string, it would be helpful to be able to have moves like that translate the location of the agent (for now one step movement in the grid), actions that can be taken in the current grid locaiton, and modiiers that can be applied to moves such as the magnitude (amount of movement to do in specific direction), the amount of a particular step to take, etc. In the future I can include more complex moves like pathfinding to a particular entity/location, carrying things, etc.
+
+Moves (for now): <-- focus is just getting to a particular location, so the moves are just simple movement in the grid
+- up, down, left, right (no turning or diagonal movement just yet)
 
 ---
 The simulator class is then in charge of taking the agent's next step and applying it to the world, and then updating the world state based on the agent's decision. 

@@ -33,4 +33,4 @@ The world class should definitely store information regarding player position, d
 
 The world class should also be able to respond whether or not it is solved. So the simulator class can call the is_solved method of the world class to determine if the agent has resolved things, whether to take another step, or if there are no more valid moves to make.
 
-world class should also be able to be updated based on the agent's next step. So the simulator class may run something like next_step, but within that we have something like world.update(agent.next_step()) to update the world state based on the agent's decision.
+World class should also be able to be updated based on the agent's next step. So the simulator class may run something like next_step, but within that we have something like world.update(agent.next_step()) to update the world state based on the agent's decision.

@@ -1,0 +1,38 @@
+class Simulator:
+    def __init__(self):
+        self.world = []
+        self.actors = []
+        self.current_world = None
+        self.current_world_index = -1
+
+        self.current_actor = None
+        self.current_actor_index = -1
+
+        self.world_count = 0
+        self.actor_count = 0
+
+    def add_world(self, world):
+        self.world.append(world)
+        self.world_count += 1
+        self.current_world_index = self.world_count - 1
+
+        # Current world is the first world added to the simulator, if no other world is set
+        if self.current_world is None:
+            self.current_world = world
+
+    def add_actor(self, actor):
+        self.actors.append(actor)
+        self.actor_count += 1
+        self.current_actor_index = self.actor_count - 1
+
+        # Current actor is the first actor added to the simulator, if no other actor is set
+        if self.current_actor is None:
+            self.current_actor = actor
+
+    def set_current_world(self, world_index):
+        self.current_world = self.world[world_index]
+        self.current_world_index = world_index
+
+    def set_current_actor(self, actor_index):
+        self.current_actor = self.actors[actor_index]
+        self.current_actor_index = actor_index

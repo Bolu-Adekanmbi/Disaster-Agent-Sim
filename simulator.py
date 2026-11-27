@@ -11,6 +11,8 @@ class Simulator:
         self.world_count = 0
         self.actor_count = 0
 
+        self.move_count = 0  # Might be better handled in the world class since we might end up with multiple worlds and actors in parallel with different move counts, but ok for now
+
     def add_world(self, world):
         self.world.append(world)
         self.world_count += 1
@@ -36,3 +38,13 @@ class Simulator:
     def set_current_actor(self, actor_index):
         self.current_actor = self.actors[actor_index]
         self.current_actor_index = actor_index
+
+    def sim_step(self, world, actor):
+        next_move = actor.next_move(world)
+        world.update(next_move)
+
+        self.move_count += 1
+
+    def print_world(self, world):
+        for row in world.get_grid():
+            print(row)

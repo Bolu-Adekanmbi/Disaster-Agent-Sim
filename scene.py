@@ -43,7 +43,8 @@ class World:
         self.map_config = process_config(config)
         self.grid = self.map_config.get("grid")
         self.player_start = self.map_config.get("player_start")
-        self.player = None
+        self.player_location = self.player_start
+        self.player = None  # Perhaps with the simulator managing player matching there isn't a need for storing player in World
 
     def get_player_start(self):
         return self.player_start
@@ -66,7 +67,16 @@ class World:
     def get_grid(self):
         return self.grid
 
-    # def sim_step(self):
+    def update(self, move):
+        if move == "forward":
+            self.player_location = (
+                self.player_location[0],
+                self.player_location[1] + 1,
+            )
+            self.grid[self.player_location[0]][self.player_location[1]] = "p"
+            self.grid[self.player_location[0]][self.player_location[1] - 1] = "="
+
+            # print(f"Moving player `{self.player}` forward in world `{self.name}`")
 
     def __str__(self):
         return f"World: {self.name}\nPlayer Start: {self.player_start}\nPlayer: {self.player}"

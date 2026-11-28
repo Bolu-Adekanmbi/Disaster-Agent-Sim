@@ -5,36 +5,51 @@ import csv
 def process_config(config):
     path = Path(config)
 
-    # Check if the path exists and is a file
-    if path.exists() and path.is_file():
-        print("World config file exists, initiating processing...")
-    else:
-        print(f"The config file `{str(path)}` does not exist")
-        return {}
+    if path.suffix.lower() != ".csv":
+        raise ValueError(f"World config must be a CSV file: {path}")
+    if not path.exists():
+        raise FileNotFoundError(f"World config file does not exist: {path}")
+    if not path.is_file():
+        raise ValueError(f"World config path is not a file: {path}")
 
-    # Check that it is a valid config file (CSV for now)
-    # Check rules like world boundaries, roads exists, some disaster etc.
+    with path.open(mode="r", newline="", encoding="utf-8-sig") as file:
+        try:
+            grid = [row for row in csv.reader(file) if row]
+        except csv.Error as error:
+            raise ValueError(f"Invalid CSV in world config {path}: {error}") from error
 
-    # Where we store world info from processed config, returned by the function
-    world_info = {}
-    world_info["grid"] = []
+    if not grid:
+        raise ValueError(f"World config CSV is empty: {path}")
 
-    # Process the config as CSV
-    with open(path, mode="r", newline="") as file:
-        reader = csv.reader(file)
+    width = len(grid[0])
+    if width == 0 or any(len(row) != width for row in grid):
+        raise ValueError(f"World config must contain a non-empty rectangular grid: {path}")
 
-        r = 0  # row counters
-        for row in reader:
-            world_info["grid"].append(row)
-            # print(row)
-            c = 0  # col counter resets each row
-            for val in row:
-                # print(f"row {r} col {c} : {val}")
-                if val == "p":
-                    world_info["player_start"] = (r, c)
-                c += 1
-            r += 1
-    return world_info
+    height = len(grid)
+    player_positions = [
+        (row_index, column_index)
+        for row_index, row in enumerate(grid)
+        for column_index, cell in enumerate(row)
+        if cell == "p"
+    ]
+    if len(player_positions) != 1:
+        raise ValueError(
+            f"World config must contain exactly one player start 'p', found {len(player_positions)}: {path}"
+        )
+
+    if height < 3 or width < 3:
+        raise ValueError(f"World config must be at least 3 rows by 3 columns: {path}")
+
+    boundary_cells = (
+        grid[0]
+        + grid[-1]
+        + [row[0] for row in grid[1:-1]]
+        + [row[-1] for row in grid[1:-1]]
+    )
+    if any(cell != "#" for cell in boundary_cells):
+        raise ValueError(f"World config must have '#' on every outer boundary cell: {path}")
+
+    return {"grid": grid, "player_start": player_positions[0]}
 
 
 class World:

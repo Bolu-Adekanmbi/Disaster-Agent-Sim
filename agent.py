@@ -1,3 +1,6 @@
+from moves import Move, RIGHT
+
+
 class Actor:
     def __init__(self, name):
         self.name = name
@@ -8,4 +11,4 @@ class Actor:
 
     def next_move(self, world):
         if world:
-            return "forward"  # placeholder for now, will implement strategy later, and maybe a move class
+            return Move(RIGHT)

@@ -1,5 +1,6 @@
 from pathlib import Path
 import csv
+from moves import Move
 
 
 def process_config(config):
@@ -83,15 +84,26 @@ class World:
         return self.grid
 
     def update(self, move):
-        if move == "forward":
-            self.player_location = (
-                self.player_location[0],
-                self.player_location[1] + 1,
-            )
-            self.grid[self.player_location[0]][self.player_location[1]] = "p"
-            self.grid[self.player_location[0]][self.player_location[1] - 1] = "="
+        if not isinstance(move, Move):
+            return False
 
-            # print(f"Moving player `{self.player}` forward in world `{self.name}`")
+        row, column = self.player_location
+        destination = self.player_location
+        for _ in range(move.magnitude):
+            row += move.direction.row_change
+            column += move.direction.column_change
+            if not (0 <= row < len(self.grid) and 0 <= column < len(self.grid[row])):
+                return False
+            if self.grid[row][column] != "=":
+                return False
+            destination = (row, column)
+
+        old_row, old_column = self.player_location
+        new_row, new_column = destination
+        self.grid[old_row][old_column] = "="
+        self.grid[new_row][new_column] = "p"
+        self.player_location = destination
+        return True
 
     def __str__(self):
         return f"World: {self.name}\nPlayer Start: {self.player_start}\nPlayer: {self.player}"

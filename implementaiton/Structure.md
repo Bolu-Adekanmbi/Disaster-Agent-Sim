@@ -14,12 +14,20 @@ Right now: the agent is given the whole world, and it can see everything (will b
 
 This branches out into two types of disaster response situations: full visibility vs partial visibility. These are 2 separate scenarios that are applicable to real life
 
-Move class?
+Move class
 --
-The agent might need a move class? Instead of just returning a string, it would be helpful to be able to have moves like that translate the location of the agent (for now one step movement in the grid), actions that can be taken in the current grid locaiton, and modiiers that can be applied to moves such as the magnitude (amount of movement to do in specific direction), the amount of a particular step to take, etc. In the future I can include more complex moves like pathfinding to a particular entity/location, carrying things, etc.
+The agent chooses a move based on what it can see. The four directions are reusable immutable definitions. Each chosen move is its own object with a direction and optional magnitude, so entities can choose how far to move without defining separate moves for each distance. A move also has a description. The agent is primarily the decision-maker and should make reasonable choices, but the result may still be invalid.
+
+The simulator passes the move to the world. The world checks each cell along the move for validity, including collisions and boundaries, and either updates to a legal state or rejects the move without changing the world. The world owns this validation so move validity is enforced once, not separately in both the agent and world.
+
+For now, moves are only up, down, left, and right, with an optional magnitude. `=` means traversable. When the player leaves a location, that location becomes `=` and remains traversable.
+
+In the future, moves could include pathfinding to an entity or location, carrying things, and other modifiers.
 
 Moves (for now): <-- focus is just getting to a particular location, so the moves are just simple movement in the grid
 - up, down, left, right (no turning or diagonal movement just yet)
+
+The four immutable direction definitions should be reusable when imported. In Python, module-level definitions can be imported and reused; Java-style `static` variables are not needed. Each agent creates a move value with the direction and magnitude it chooses.
 
 ---
 The simulator class is then in charge of taking the agent's next step and applying it to the world, and then updating the world state based on the agent's decision. 
